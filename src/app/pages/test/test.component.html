@@ -1,1 +1,41 @@
-<p>test works!</p>
+<h1>Welcome to {{ user.title | uppercase }}</h1>
+<p>Intern: {{ user.name }}</p>
+
+<p>Today is {{ currentDate | date: 'fullDate'}}</p>
+<p>Status: {{ getStatus() }}</p>
+
+<button [disabled]="!allowClick" (click)="toggleTasks()">
+    {{ showTasks ? 'hide to do list' : 'view to do list' }}
+</button>
+
+<button (click)="onSave()">Save</button>
+
+<hr>
+
+<div *ngIf="showTasks; else noTasksTemplate">
+  <h3>to do list</h3>
+  
+  <table border="1">
+    <thead>
+      <tr>
+        <th>no.</th>
+        <th>tasks</th>
+        <th>priority</th>
+        <th>deadline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of taskList; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ task.description | lowercase }}</td>
+        <td>{{ task.priority | uppercase }}</td>
+        <td>{{ task.deadline | date: 'MMMM d, y' | lowercase }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<ng-template #noTasksTemplate>
+  <p>click "view to do list" to see your current to do list</p>
+</ng-template>
