@@ -20,6 +20,9 @@ export class MypageComponent implements OnInit {
   ngOnInit() {
     console.log(this.ojtUser);
     console.log(this.ojtUser);
+    console.log(this.ojtUser);
+    console.log(this.ojtUser);
+    console.log(this.ojtUser);
     
   }
 
