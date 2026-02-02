@@ -1,35 +1,55 @@
 <h1>Welcome to {{ user.title | uppercase }}</h1>
-<p>Intern: {{ user.name }}</p>
+<p>Intern <strong>{{ user.name }}</strong></p>
 
 <p>Today is {{ currentDate | date: 'fullDate'}}</p>
-<p>Status: {{ getStatus() }}</p>
 
-<button [disabled]="!allowClick" (click)="toggleTasks()">
-    {{ showTasks ? 'hide to do list' : 'view to do list' }}
-</button>
-
-<button (click)="onSave()">Save</button>
+<div style="margin: 20px 0;">
+    <button class="btn-main" [disabled]="!allowClick" (click)="toggleTasks()">
+        {{ showTasks ? 'Hide To Do List' : 'View To Do List' }}
+    </button>
+</div>
 
 <hr>
 
+
+<div class="input-section">
+    <input type="text" #taskInput placeholder="Enter new task...">
+    <button (click)="addTask(taskInput)">Add New Task</button>
+</div>
+
+<br>
+
 <div *ngIf="showTasks; else noTasksTemplate">
-  <h3>to do list</h3>
-  <p>test</p>
+  <h3>To Do List</h3>
+  
   <table border="1">
     <thead>
       <tr>
-        <th>no.</th>
-        <th>tasks</th>
-        <th>priority</th>
-        <th>deadline</th>
+        <th>Num</th>
+        <th>Description</th>
+        <th>Priority</th>
+        <th>Deadline</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let task of taskList; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ task.description | lowercase }}</td>
-        <td>{{ task.priority | uppercase }}</td>
-        <td>{{ task.deadline | date: 'MMMM d, y' | lowercase }}</td>
+
+        <td [style.text-decoration]="task.isDone ? 'line-through' : 'none'">
+            {{ task.description | lowercase }}
+        </td>
+
+        <td>{{ task.priority | priority }}</td>
+
+        <td>{{ task.deadline | date: 'MMMM d, y' }}</td>
+
+        <td>
+            <button (click)="toggleComplete(task)">
+                {{ task.isDone ? 'Undo' : 'Done' }}
+            </button>
+        </td>
+
       </tr>
     </tbody>
   </table>
@@ -37,5 +57,5 @@
 
 
 <ng-template #noTasksTemplate>
-  <p>click "view to do list" to see your current to do list</p>
+  <p><i>The list is hidden. Click the button above to view your tasks.</i></p>
 </ng-template>

@@ -7,44 +7,56 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestComponent implements OnInit {
 
+  // use interpolation
   user = {
     title: 'internship',
-    name: 'jerald bon harris',
-    status: 'online'
+    name: 'Jerald Bon Harris',
   };
 
+  // use property binding 
   allowClick = false;
   showTasks = false;
-
   currentDate = new Date();
 
+  // use ngFor
   taskList = [
-    { id: 1, description: 'use interpolation', priority: 'high', deadline: new Date(2026, 1, 6) },
-    { id: 2, description: 'use ngif and ngfor', priority: 'medium', deadline: new Date(2026, 1, 5) },
-    { id: 3, description: 'use builtin pipes', priority: 'low', deadline: new Date(2026, 1, 4) }
+    { id: 1, description: 'use interpolation', priority: 'high', deadline: new Date(2026, 1, 6), isDone: true },
+    { id: 2, description: 'use ngif and ngfor', priority: 'medium', deadline: new Date(2026, 1, 5), isDone: false },
+    { id: 3, description: 'use builtin pipes', priority: 'low', deadline: new Date(2026, 1, 4), isDone: false }
   ];
 
   constructor() {
    setTimeout(() => {
      this.allowClick = true;
-   }, 2000);
+   }, 5000);
   }
 
   ngOnInit() {}
 
-  getStatus() { 
-    return this.user.status; 
-  }
-
-  onSave() {
-    alert('data saved successfully');
+  // use event binding
+  addTask(inputElement: HTMLInputElement){
+    const description = inputElement.value;
+    if(description){
+      this.taskList.push({
+        id: this.taskList.length + 1,
+        description: description,
+        priority: 'low',
+        deadline: new Date(),
+        isDone: false
+      });
+      inputElement.value = '';
+    }
   }
 
   toggleTasks() {
     this.showTasks = !this.showTasks;
   }
 
- 
+  toggleComplete(task: any){
+    task.isDone = !task.isDone;
+  }
+  
+
 }
 
 
