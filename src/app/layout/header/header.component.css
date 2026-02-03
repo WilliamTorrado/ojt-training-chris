@@ -1,0 +1,13 @@
+.border-bottom-blue {
+  border-bottom: 3px solid #0284c7;
+}
+
+.text-primary {
+  color: #0284c7 !important;
+}
+
+.badge-soft-blue {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}

@@ -1,21 +1,35 @@
-button {
-    padding: 10px 20px;       
-    font-size: 16px;        
-    font-weight: bold;       
-    cursor: pointer;         
-    border-radius: 8px;      
-    background-color: #007bff;
-    color: white;         
-    border: none;            
-    transition: 0.3s;        
+.sidenav-container {
+  height: calc(100vh - 130px); 
+  overflow: hidden;
 }
 
-button:hover:not(:disabled) {
-    background-color: #0056b3;
+.app-sidenav {
+  width: 300px;
+  background-color: #ffffff;
+  border-right: none;
 }
 
-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    opacity: 0.7;
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 65px; 
+  background-color: #ffffff;
+  border-top: 3px solid #0ea5e9; 
+  display: flex;
+  align-items: center; 
+  z-index: 1030;
+}
+
+
+.main-content {
+  padding: 0;
+}
+
+.border-top-sky {
+    border-top: 4px solid #0ea5e9;
+}
+
+.bg-slate-light {
+  padding-bottom: 20px;
 }

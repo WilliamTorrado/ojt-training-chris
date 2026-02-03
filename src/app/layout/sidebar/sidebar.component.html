@@ -1,0 +1,20 @@
+<div class="sidebar-card shadow-sm border-0">
+  <div class="p-3 bg-primary text-white rounded-top">
+    <h3 class="mb-0">Filter Priority</h3>
+  </div>
+  
+  <div class="list-group list-group-flush">
+    <button (click)="onFilterClick('all')" class="list-group-item list-group-item-action py-3">
+      <i class="bi bi-grid"></i> All Tasks
+    </button>
+    <button (click)="onFilterClick('high')" class="list-group-item list-group-item-action py-3 border-left-high">
+      High Priority
+    </button>
+    <button (click)="onFilterClick('medium')" class="list-group-item list-group-item-action py-3 border-left-medium">
+      Medium Priority
+    </button>
+    <button (click)="onFilterClick('low')" class="list-group-item list-group-item-action py-3 border-left-low">
+      Low Priority
+    </button>
+  </div>
+</div>

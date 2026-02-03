@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-test',
@@ -6,19 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
-
-  // use interpolation
+  @ViewChild('myInput', { static: false }) sidenav!: MatSidenav;
+  
+  // use of interpolation
   user = {
     title: 'internship',
     name: 'Jerald Bon Harris',
   };
 
-  // use property binding 
+  // use of property binding
   allowClick = false;
-  showTasks = false;
+  showTasks = true;
   currentDate = new Date();
+  
+  activeFilter = 'all';
 
-  // use ngFor
+  // data array
   taskList = [
     { id: 1, description: 'use interpolation', priority: 'high', deadline: new Date(2026, 1, 6), isDone: true },
     { id: 2, description: 'use ngif and ngfor', priority: 'medium', deadline: new Date(2026, 1, 5), isDone: false },
@@ -26,38 +30,54 @@ export class TestComponent implements OnInit {
   ];
 
   constructor() {
-   setTimeout(() => {
-     this.allowClick = true;
-   }, 5000);
+    setTimeout(() => {
+      this.allowClick = true;
+    }, 5000);
   }
 
   ngOnInit() {}
 
-  // use event binding
-  addTask(inputElement: HTMLInputElement){
-    const description = inputElement.value;
-    if(description){
+  // parent-child communication
+  onFilterSelected(filter: string){
+    this.activeFilter = filter;
+    this.closeSidebar();
+  }
+
+  get filteredTasks() {
+    if(this.activeFilter === 'all') return this.taskList;
+    return this.taskList.filter(t => t.priority === this.activeFilter);
+  }
+
+  // event binding 
+  addTask(input: HTMLInputElement){
+    if(input.value){
       this.taskList.push({
         id: this.taskList.length + 1,
-        description: description,
-        priority: 'low',
+        description: input.value,
+        priority: 'low', 
         deadline: new Date(),
         isDone: false
       });
-      inputElement.value = '';
+      input.value = ''; 
     }
+  }
+
+  deleteTask(id: number) {
+    this.taskList = this.taskList.filter(task => task.id !== id);
   }
 
   toggleTasks() {
     this.showTasks = !this.showTasks;
+    this.closeSidebar();
+  }
+  
+  private closeSidebar() {
+    if (this.sidenav) {
+      this.sidenav.close();
+    }
   }
 
   toggleComplete(task: any){
     task.isDone = !task.isDone;
   }
-  
-
 }
-
-
- 
