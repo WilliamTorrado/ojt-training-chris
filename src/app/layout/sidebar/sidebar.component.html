@@ -1,20 +1,34 @@
 <div class="sidebar-card shadow-sm border-0">
   <div class="p-3 bg-primary text-white rounded-top">
-    <h3 class="mb-0">Filter Priority</h3>
+    <h5 class="mb-0">To Do List Menu</h5>
   </div>
   
   <div class="list-group list-group-flush">
-    <button (click)="onFilterClick('all')" class="list-group-item list-group-item-action py-3">
-      <i class="bi bi-grid"></i> All Tasks
-    </button>
-    <button (click)="onFilterClick('high')" class="list-group-item list-group-item-action py-3 border-left-high">
-      High Priority
-    </button>
-    <button (click)="onFilterClick('medium')" class="list-group-item list-group-item-action py-3 border-left-medium">
-      Medium Priority
-    </button>
-    <button (click)="onFilterClick('low')" class="list-group-item list-group-item-action py-3 border-left-low">
-      Low Priority
-    </button>
+    <a routerLink="/home" 
+       routerLinkActive="active-link" 
+       (click)="onLinkClick()"
+       class="list-group-item list-group-item-action py-3">
+      <mat-icon class="mr-2">dashboard</mat-icon> Dashboard
+    </a>
+
+    <a routerLink="/tasks" 
+       routerLinkActive="active-link" 
+       (click)="onLinkClick()"
+       class="list-group-item list-group-item-action py-3">
+      <mat-icon class="mr-2">list_alt</mat-icon> My Tasks
+    </a>
+
+    <a routerLink="/profile" 
+       routerLinkActive="active-link" 
+       (click)="onLinkClick()"
+       class="list-group-item list-group-item-action py-3">
+      <mat-icon class="mr-2">person</mat-icon> Intern Profile
+    </a>
+
+    <a routerLink="/login" 
+       (click)="onLinkClick()"
+       class="list-group-item list-group-item-action py-3 text-danger">
+      <mat-icon class="mr-2">logout</mat-icon> Logout
+    </a>
   </div>
 </div>

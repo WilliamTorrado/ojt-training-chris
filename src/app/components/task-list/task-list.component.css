@@ -1,0 +1,12 @@
+.task-link {
+  color: #1e293b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.task-link:hover {
+  color: #0ea5e9;
+  text-decoration: underline;
+}
+

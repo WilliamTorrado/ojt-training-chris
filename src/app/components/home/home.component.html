@@ -1,0 +1,76 @@
+<div class="container-fluid fade-in">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1 class="text-slate font-weight-bold mb-0">{{ currentGreeting }}, {{ userName }}!</h1>
+      <p class="text-muted">Welcome back to your Pathfinder Dashboard.</p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm border-left-sky py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Tasks</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.total }}</div>
+            </div>
+            <div class="col-auto">
+              <mat-icon class="text-sky-light" style="font-size: 32px; height: 32px; width: 32px;">assignment</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm border-left-warning py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.pending }}</div>
+            </div>
+            <div class="col-auto">
+              <mat-icon class="text-warning-light" style="font-size: 32px; height: 32px; width: 32px;">pending_actions</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm border-left-success py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Completed</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.completed }}</div>
+            </div>
+            <div class="col-auto">
+              <mat-icon class="text-success-light" style="font-size: 32px; height: 32px; width: 32px;">check_circle</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 p-4 rounded-lg bg-white">
+        <h4 class="text-slate font-weight-bold mb-3">Quick Navigation</h4>
+        <p class="text-secondary mb-4">What would you like to do today?</p>
+        
+        <div class="d-flex flex-wrap gap-3">
+          <button mat-flat-button color="primary" routerLink="/tasks" class="mr-2">
+            <mat-icon>list</mat-icon> View Task List
+          </button>
+          <button mat-stroked-button color="accent" routerLink="/profile">
+            <mat-icon>account_circle</mat-icon> Update Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { HomeComponent } from './components/home/home.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
+import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileInfoComponent } from './components/profile-info/profile-info.component';
+import { ProfileStatsComponent } from './components/profile-stats/profile-stats.component';
+import { LoginComponent } from './components/login/login.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -21,7 +30,15 @@ import { MatListModule } from '@angular/material/list';
     PriorityPipe,
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    HomeComponent,
+    TaskListComponent,
+    TaskDetailComponent,
+    ProfileComponent,
+    ProfileInfoComponent,
+    ProfileStatsComponent,
+    LoginComponent,
+    NotFoundComponent
   ],
   imports: [
     MatSidenavModule,
@@ -29,7 +46,8 @@ import { MatListModule } from '@angular/material/list';
     MatIconModule,
     MatListModule,
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
