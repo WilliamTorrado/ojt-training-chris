@@ -1,6 +1,6 @@
 <div class="sidebar-card shadow-sm border-0">
   <div class="p-3 bg-primary text-white rounded-top">
-    <h5 class="mb-0">To Do List Menu</h5>
+    <h3 class="mb-0">Main Menu</h3>
   </div>
   
   <div class="list-group list-group-flush">
@@ -11,23 +11,29 @@
       <mat-icon class="mr-2">dashboard</mat-icon> Dashboard
     </a>
 
+    <br>
+
     <a routerLink="/tasks" 
        routerLinkActive="active-link" 
        (click)="onLinkClick()"
        class="list-group-item list-group-item-action py-3">
-      <mat-icon class="mr-2">list_alt</mat-icon> My Tasks
+      <mat-icon class="mr-2">list_alt</mat-icon> To Do
     </a>
+
+    <br>
 
     <a routerLink="/profile" 
        routerLinkActive="active-link" 
        (click)="onLinkClick()"
        class="list-group-item list-group-item-action py-3">
-      <mat-icon class="mr-2">person</mat-icon> Intern Profile
+      <mat-icon class="mr-2">person</mat-icon> Profile
     </a>
 
-    <a routerLink="/login" 
-       (click)="onLinkClick()"
-       class="list-group-item list-group-item-action py-3 text-danger">
+    <br>
+
+    <a href="javascript:void(0)" 
+      (click)="onLogout()"
+      class="list-group-item list-group-item-action py-3 text-danger">
       <mat-icon class="mr-2">logout</mat-icon> Logout
     </a>
   </div>

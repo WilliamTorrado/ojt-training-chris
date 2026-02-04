@@ -20,7 +20,7 @@ taskId!: number;
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.taskId = +params['id']; // The '+' converts the string to a number
+      this.taskId = +params['id']; 
       this.task = this.allTasks.find(t => t.id === this.taskId);
     });
   }

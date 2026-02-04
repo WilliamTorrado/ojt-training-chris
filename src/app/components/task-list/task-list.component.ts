@@ -9,6 +9,10 @@ export class TaskListComponent implements OnInit {
 
   activeFilter = 'all';
 
+  setFilter(filter: string) {
+    this.activeFilter = filter;
+  } 
+
   taskList = [
     { id: 1, description: 'setup angular router', priority: 'high', deadline: new Date(2026, 1, 10), isDone: true },
     { id: 2, description: 'create home, list, detail', priority: 'medium', deadline: new Date(2026, 1, 15), isDone: false },

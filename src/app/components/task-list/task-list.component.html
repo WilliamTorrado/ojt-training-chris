@@ -5,12 +5,31 @@
   </div>
   <hr class="border-sky-light">
 
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="btn-group shadow-sm" role="group" aria-label="Task Filters">
+        <button type="button" class="btn filter-btn" 
+                [class.active-filter]="activeFilter === 'all'" 
+                (click)="setFilter('all')">All</button>
+        <button type="button" class="btn filter-btn" 
+                [class.active-filter]="activeFilter === 'high'" 
+                (click)="setFilter('high')">High</button>
+        <button type="button" class="btn filter-btn" 
+                [class.active-filter]="activeFilter === 'medium'" 
+                (click)="setFilter('medium')">Medium</button>
+        <button type="button" class="btn filter-btn" 
+                [class.active-filter]="activeFilter === 'low'" 
+                (click)="setFilter('low')">Low</button>
+      </div>
+    </div>
+  </div>
+
   <div class="input-group mb-4 shadow-sm">
     <input type="text" class="form-control border-sky-light" #taskInput 
-           placeholder="What needs to be done, Jerald?">
+           placeholder="Enter new task.">
     <div class="input-group-append">
       <button class="btn btn-sky-success px-4 text-white" (click)="addTask(taskInput)">
-         Add Task
+          Add Task
       </button>
     </div>
   </div>
@@ -29,14 +48,20 @@
       <tbody>
         <tr *ngFor="let task of filteredTasks; let i = index">
           <td class="font-weight-bold text-muted">{{ i + 1 }}</td>
-          <td [style.text-decoration]="task.isDone ? 'line-through' : 'none'" class="text-slate">
-            {{ task.description }}
+          
+          <td class="text-slate">
+            <a [routerLink]="['/tasks', task.id]" 
+               class="task-link"
+               [style.text-decoration]="task.isDone ? 'line-through' : 'none'">
+              {{ task.description }}
+            </a>
           </td>
+
           <td>
             <span class="badge border" 
                   [ngClass]="{'bg-danger-light text-danger': task.priority === 'high', 
-                             'bg-warning-light text-warning': task.priority === 'medium',
-                             'bg-info-light text-info': task.priority === 'low'}">
+                              'bg-warning-light text-warning': task.priority === 'medium',
+                              'bg-info-light text-info': task.priority === 'low'}">
               {{ task.priority | uppercase }}
             </span>
           </td>
@@ -54,11 +79,6 @@
               </button>
             </div>
           </td>
-          <td class="text-slate">
-             <a [routerLink]="['/tasks', task.id]" class="task-link">
-             {{ task.description }}
-             </a>
-          </td>
         </tr>
       </tbody>
     </table>
@@ -66,6 +86,6 @@
 
   <div *ngIf="filteredTasks.length === 0" class="text-center py-5">
     <mat-icon class="text-muted" style="font-size: 48px; height: 48px; width: 48px;">inventory_2</mat-icon>
-    <p class="text-muted mt-2">No tasks found. Time to add some goals!</p>
+    <p class="text-muted mt-2">No tasks found for <strong>{{ activeFilter | uppercase }}</strong> priority.</p>
   </div>
 </div>

@@ -27,6 +27,7 @@ export class TestComponent implements OnInit {
     { id: 1, description: 'use interpolation', priority: 'high', deadline: new Date(2026, 1, 6), isDone: true },
     { id: 2, description: 'use ngif and ngfor', priority: 'medium', deadline: new Date(2026, 1, 5), isDone: false },
     { id: 3, description: 'use builtin pipes', priority: 'low', deadline: new Date(2026, 1, 4), isDone: false }
+
   ];
 
   constructor() {

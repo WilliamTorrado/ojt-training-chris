@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +12,7 @@ export class SidebarComponent implements OnInit {
   // close after navigation
   @Output() navigated = new EventEmitter<void>();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
@@ -24,5 +25,13 @@ export class SidebarComponent implements OnInit {
   onLinkClick() {
     this.navigated.emit();
   }
+
+  onLogout() {
+    localStorage.removeItem('isLoggedIn');
+    this.navigated.emit();
+    
+    this.router.navigate(['/login']);
+  }
+
 
 }

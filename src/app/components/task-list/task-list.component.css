@@ -10,3 +10,34 @@
   text-decoration: underline;
 }
 
+.filter-btn {
+  background-color: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  font-weight: 500;
+  padding: 8px 20px;
+}
+
+.filter-btn:hover {
+  background-color: #f1f5f9;
+  color: #0ea5e9;
+}
+
+.active-filter {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border-color: #0ea5e9 !important;
+}
+
+.task-link {
+  color: #1e293b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.task-link:hover {
+  color: #0ea5e9;
+  text-decoration: underline;
+}
+
