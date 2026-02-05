@@ -50,22 +50,24 @@ export class TestComponent implements OnInit {
   }
 
   // event binding 
-  addTask(input: HTMLInputElement){
-    if(input.value){
-      this.taskList.push({
-        id: this.taskList.length + 1,
-        description: input.value,
-        priority: 'low', 
-        deadline: new Date(),
-        isDone: false
-      });
-      input.value = ''; 
-    }
+  addTask(input: HTMLInputElement) {
+  if (input.value) {
+    // Create a new array reference using the spread operator [...]
+    this.taskList = [...this.taskList, {
+      id: Date.now(), // Better ID generation
+      description: input.value,
+      priority: 'low',
+      deadline: new Date(),
+      isDone: false
+    }];
+    input.value = '';
   }
+}
 
   deleteTask(id: number) {
-    this.taskList = this.taskList.filter(task => task.id !== id);
-  }
+  // .filter() already creates a new array reference, so this works perfectly
+  this.taskList = this.taskList.filter(task => task.id !== id);
+}
 
   toggleTasks() {
     this.showTasks = !this.showTasks;
@@ -78,7 +80,13 @@ export class TestComponent implements OnInit {
     }
   }
 
-  toggleComplete(task: any){
-    task.isDone = !task.isDone;
-  }
+ toggleComplete(task: any) {
+  task.isDone = !task.isDone;
+  // Trigger a reference change so the counter updates
+  this.taskList = [...this.taskList];
+}
+
+getPendingCount() {
+  return this.taskList.filter(t => !t.isDone).length;
+}
 }

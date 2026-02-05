@@ -1,4 +1,7 @@
-<app-header [username]="user.name" [taskCount]="taskList.length"></app-header>
+<app-header 
+  [username]="user.name" 
+  [taskCount]="getPendingCount()">
+</app-header>
 
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="over" class="app-sidenav shadow">

@@ -1,81 +1,76 @@
-<div class="card shadow-sm border-0 p-4 rounded-lg bg-white">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="text-slate font-weight-bold text-uppercase mb-0">My Training Tasks</h2>
-    <span class="badge badge-primary px-3 py-2">{{ filteredTasks.length }} Tasks</span>
+<div class="card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="text-slate font-weight-bold text-uppercase mb-0 h5" style="letter-spacing: 1px;">
+      My Training Tasks
+    </h1>
+  
   </div>
-  <hr class="border-sky-light">
+  
+  <span class="badge task-counter-badge shadow-sm">
+    {{ filteredTasks.length }} Tasks Total
+  </span>
+</div>
 
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="btn-group shadow-sm" role="group" aria-label="Task Filters">
-        <button type="button" class="btn filter-btn" 
-                [class.active-filter]="activeFilter === 'all'" 
-                (click)="setFilter('all')">All</button>
-        <button type="button" class="btn filter-btn" 
-                [class.active-filter]="activeFilter === 'high'" 
-                (click)="setFilter('high')">High</button>
-        <button type="button" class="btn filter-btn" 
-                [class.active-filter]="activeFilter === 'medium'" 
-                (click)="setFilter('medium')">Medium</button>
-        <button type="button" class="btn filter-btn" 
-                [class.active-filter]="activeFilter === 'low'" 
-                (click)="setFilter('low')">Low</button>
-      </div>
+  <div class="mb-4">
+    <div class="btn-group shadow-sm" role="group">
+      <button type="button" class="btn filter-btn" [class.active-filter]="activeFilter === 'all'" (click)="setFilter('all')">All</button>
+      <button type="button" class="btn filter-btn" [class.active-filter]="activeFilter === 'high'" (click)="setFilter('high')">High</button>
+      <button type="button" class="btn filter-btn" [class.active-filter]="activeFilter === 'medium'" (click)="setFilter('medium')">Medium</button>
+      <button type="button" class="btn filter-btn" [class.active-filter]="activeFilter === 'low'" (click)="setFilter('low')">Low</button>
     </div>
   </div>
 
   <div class="input-group mb-4 shadow-sm">
-    <input type="text" class="form-control border-sky-light" #taskInput 
-           placeholder="Enter new task.">
-    <div class="input-group-append">
-      <button class="btn btn-sky-success px-4 text-white" (click)="addTask(taskInput)">
-          Add Task
-      </button>
-    </div>
+  <input type="text" 
+         class="form-control border-sky-light" 
+         #taskInput 
+         placeholder="Enter new task..."
+         (keyup.enter)="addTask(taskInput)">
+
+  <div class="input-group-append">
+    <button class="btn btn-sky-primary px-4 text-white" 
+            (click)="addTask(taskInput)">
+      <mat-icon class="align-middle mr-1">add_task</mat-icon> 
+      Add Task
+    </button>
   </div>
+</div>
 
   <div class="table-responsive">
-    <table class="table table-hover">
-      <thead class="bg-sky-light text-slate">
+    <table class="table table-hover mb-0">
+      <thead>
         <tr>
-          <th>No.</th>
-          <th>Description</th>
-          <th>Priority</th>
-          <th>Deadline</th>
-          <th>Action</th>
+          <th width="5%">No.</th>
+          <th width="45%">Description</th>
+          <th width="15%">Priority</th>
+          <th width="15%">Deadline</th>
+          <th width="20%" class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let task of filteredTasks; let i = index">
-          <td class="font-weight-bold text-muted">{{ i + 1 }}</td>
-          
-          <td class="text-slate">
-            <a [routerLink]="['/tasks', task.id]" 
-               class="task-link"
-               [style.text-decoration]="task.isDone ? 'line-through' : 'none'">
+          <td class="text-muted font-weight-bold">{{ i + 1 }}</td>
+          <td>
+            <a [routerLink]="['/tasks', task.id]" class="task-link" [style.text-decoration]="task.isDone ? 'line-through' : 'none'" [style.opacity]="task.isDone ? '0.5' : '1'">
               {{ task.description }}
             </a>
           </td>
-
           <td>
-            <span class="badge border" 
-                  [ngClass]="{'bg-danger-light text-danger': task.priority === 'high', 
-                              'bg-warning-light text-warning': task.priority === 'medium',
-                              'bg-info-light text-info': task.priority === 'low'}">
+            <span class="badge border" [ngClass]="{'bg-danger-light text-danger border-danger': task.priority === 'high', 
+                                                   'bg-warning-light text-warning border-warning': task.priority === 'medium',
+                                                   'bg-info-light text-info border-info': task.priority === 'low'}">
               {{ task.priority | uppercase }}
             </span>
           </td>
-          <td class="small text-muted">{{ task.deadline | date: 'MMM d, y' }}</td>
-          <td>
+          <td class="small text-muted font-weight-500">{{ task.deadline | date: 'MMM d, y' }}</td>
+          <td class="text-center">
             <div class="btn-group">
-              <button class="btn btn-sm shadow-sm px-3" 
-                      [class.btn-sky]="!task.isDone" 
-                      [class.btn-light]="task.isDone"
-                      (click)="toggleComplete(task)">
+              <button class="btn btn-sm shadow-sm px-3" [class.btn-primary]="!task.isDone" [class.btn-light]="task.isDone" (click)="toggleComplete(task)">
                 {{ task.isDone ? 'Undo' : 'Done' }}
               </button>
-              <button class="btn btn-sm btn-outline-danger ml-2" (click)="deleteTask(task.id)">
-                <mat-icon style="font-size: 18px; height: 18px; width: 18px;">delete</mat-icon>
+              <button class="btn btn-sm btn-outline-danger ml-2 border-0" (click)="deleteTask(task.id)">
+                <mat-icon style="font-size: 18px; height: 18px; width: 18px;">delete_outline</mat-icon>
               </button>
             </div>
           </td>
@@ -84,8 +79,9 @@
     </table>
   </div>
 
-  <div *ngIf="filteredTasks.length === 0" class="text-center py-5">
-    <mat-icon class="text-muted" style="font-size: 48px; height: 48px; width: 48px;">inventory_2</mat-icon>
-    <p class="text-muted mt-2">No tasks found for <strong>{{ activeFilter | uppercase }}</strong> priority.</p>
+  <div *ngIf="filteredTasks.length === 0" class="text-center py-5 bg-light rounded-lg mt-3" style="border: 2px dashed #e2e8f0;">
+    <mat-icon class="text-muted" style="font-size: 48px; height: 48px; width: 48px;">auto_stories</mat-icon>
+    <p class="text-muted mt-2 font-weight-bold">Your list is clear!</p>
+    <small class="text-muted">No tasks found for the {{ activeFilter }} filter.</small>
   </div>
 </div>

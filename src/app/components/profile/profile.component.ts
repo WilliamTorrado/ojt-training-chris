@@ -53,7 +53,6 @@ export class ProfileComponent implements OnInit {
       this.addressService.getTownsCities(this.selectedProvince)
         .subscribe(data => this.towns = data);
         console.log(this.towns);
-        
     }
   }
 

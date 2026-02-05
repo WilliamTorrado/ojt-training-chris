@@ -1,13 +1,24 @@
 .login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  
   height: 100vh;
-  width: 100vw;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  width: 100%;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
 }
 
 .login-card {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 15px;
+  width: 90%; 
+  max-width: 420px;
+  border-radius: 20px;
+  border-top: 6px solid #0ea5e9 !important; 
+  background: #ffffff;
 }
 
 .icon-circle {
@@ -17,14 +28,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f0f9ff;
+  color: #0ea5e9;
 }
 
 .btn-login {
   font-size: 16px;
-  letter-spacing: 1px;
-  height: 48px;
+  letter-spacing: 1.5px;
+  height: 50px;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.bg-slate-light {
-  background-color: #f8fafc;
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3) !important;
+}
+
+.text-slate {
+  color: #1e293b;
 }

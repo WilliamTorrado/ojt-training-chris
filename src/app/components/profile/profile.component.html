@@ -50,7 +50,7 @@
       </div>
 
       <button mat-raised-button color="primary" 
-              [disabled]="!selectedBarangay || !isLoading"
+              [disabled]="!selectedBarangay || isLoading"
               (click)="saveAddress()"
               class="px-4 shadow-sm">
         <mat-icon class="mr-1" *ngIf="!isLoading">save</mat-icon>
