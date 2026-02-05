@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-task-list',
@@ -6,12 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
-
   activeFilter = 'all';
-
-  setFilter(filter: string) {
-    this.activeFilter = filter;
-  } 
 
   taskList = [
     { id: 1, description: 'setup angular router', priority: 'high', deadline: new Date(2026, 1, 10), isDone: true },
@@ -23,24 +19,35 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  setFilter(filter: string) {
+    this.activeFilter = filter;
+  } 
+
   get filteredTasks() {
     if (this.activeFilter === 'all') return this.taskList;
     return this.taskList.filter(t => t.priority === this.activeFilter);
   }
 
-  addTask(input: HTMLInputElement) {
-    if (input.value.trim()) {
-      const newTask = {
-        id: Date.now(),
-        description: input.value,
-        priority: 'low',
-        deadline: new Date(),
-        isDone: false
-      };
-      this.taskList.push(newTask);
-      input.value = '';
-    }
+
+ addTask(form: NgForm) {
+  if (form.valid) {
+    const newTask = {
+      id: Date.now(),
+      description: form.value.description,
+      priority: form.value.priority,
+      deadline: new Date(form.value.deadline), 
+      isDone: false
+    };
+
+    this.taskList = [...this.taskList, newTask];
+
+
+    form.resetForm({
+      priority: 'low',
+      deadline: '' 
+    });
   }
+}
 
   toggleComplete(task: any) {
     task.isDone = !task.isDone;
@@ -49,5 +56,4 @@ export class TaskListComponent implements OnInit {
   deleteTask(id: number) {
     this.taskList = this.taskList.filter(t => t.id !== id);
   }
-
 }

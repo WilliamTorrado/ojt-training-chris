@@ -6,7 +6,6 @@
   background-color: #ffffff;
 }
 
-
 .bg-primary h5 {
   font-weight: 700 !important;
   letter-spacing: 0.5px;
@@ -20,7 +19,6 @@ label {
   margin-bottom: 8px;
   display: block;
 }
-
 
 .custom-select {
   border: 1.5px solid #e2e8f0 !important;
@@ -45,7 +43,6 @@ label {
   border-color: #cbd5e1 !important;
   color: #94a3b8 !important;
 }
-
 
 button[mat-raised-button] {
   border-radius: 8px !important;

@@ -43,19 +43,5 @@
       </div>
     </div>
 
-    <div class="mt-4 d-flex justify-content-end align-items-center">
-      <div *ngIf="isLoading" class="mr-3 d-flex align-items-center text-primary">
-        <div class="spinner-border spinner-border-sm mr-2" role="status"></div>
-        <small class="font-weight-bold text-uppercase">Processing...</small>
-      </div>
-
-      <button mat-raised-button color="primary" 
-              [disabled]="!selectedBarangay || isLoading"
-              (click)="saveAddress()"
-              class="px-4 shadow-sm">
-        <mat-icon class="mr-1" *ngIf="!isLoading">save</mat-icon>
-        {{ isLoading ? 'SAVING DATA...' : 'UPDATE DEPLOYMENT LOCATION' }}
-      </button>
-    </div>
   </div>
 </div>

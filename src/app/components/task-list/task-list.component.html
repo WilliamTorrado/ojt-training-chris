@@ -1,16 +1,14 @@
-<div class="card p-4">
+<div class="card p-4 shadow-sm border-0">
   <div class="d-flex justify-content-between align-items-center mb-4">
-  <div>
-    <h1 class="text-slate font-weight-bold text-uppercase mb-0 h5" style="letter-spacing: 1px;">
-      My Training Tasks
-    </h1>
-  
+    <div>
+      <h1 class="text-slate font-weight-bold text-uppercase mb-0 h5" style="letter-spacing: 1px;">
+        My Training Tasks
+      </h1>
+    </div>
+    <div class="text-slate font-weight-bold text-uppercase h5 mb-0" style="letter-spacing: 1px;">
+      {{ filteredTasks.length }} Tasks Total
+    </div>
   </div>
-  
-  <span class="badge task-counter-badge shadow-sm">
-    {{ filteredTasks.length }} Tasks Total
-  </span>
-</div>
 
   <div class="mb-4">
     <div class="btn-group shadow-sm" role="group">
@@ -21,21 +19,54 @@
     </div>
   </div>
 
-  <div class="input-group mb-4 shadow-sm">
-  <input type="text" 
-         class="form-control border-sky-light" 
-         #taskInput 
-         placeholder="Enter new task..."
-         (keyup.enter)="addTask(taskInput)">
+ <form #taskForm="ngForm" (ngSubmit)="addTask(taskForm)" class="mb-4">
+  <div class="input-group shadow-sm">
+    <input type="text" 
+           name="description" 
+           ngModel 
+           required 
+           #taskDesc="ngModel"
+           class="form-control border-sky-light" 
+           placeholder="What's next, Jerald?">
 
-  <div class="input-group-append">
-    <button class="btn btn-sky-primary px-4 text-white" 
-            (click)="addTask(taskInput)">
-      <mat-icon class="align-middle mr-1">add_task</mat-icon> 
-      Add Task
-    </button>
+    <input type="date" 
+           name="deadline" 
+           ngModel 
+           required 
+           #taskDate="ngModel"
+           class="form-control col-md-3 border-left-0 text-muted"
+           style="height: auto;">
+
+    <select name="priority" 
+            [ngModel]="'low'" 
+            class="custom-select col-md-2 border-left-0 text-muted"
+            style="height: auto;">
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+
+    <div class="input-group-append">
+      <button type="submit" 
+              class="btn btn-sky-primary px-4 text-white" 
+              [disabled]="taskForm.invalid">
+        <mat-icon class="align-middle mr-1">add_task</mat-icon> 
+        Add
+      </button>
+    </div>
   </div>
-</div>
+
+  <div class="d-flex gap-3 mt-2 ml-2">
+    <div *ngIf="taskDesc.invalid && taskDesc.touched" class="text-danger small fade-in mr-3">
+      <mat-icon style="font-size: 14px; height: 14px; width: 14px;" class="align-middle">error_outline</mat-icon>
+      Description required.
+    </div>
+    <div *ngIf="taskDate.invalid && taskDate.touched" class="text-danger small fade-in">
+      <mat-icon style="font-size: 14px; height: 14px; width: 14px;" class="align-middle">calendar_today</mat-icon>
+      Please select a deadline.
+    </div>
+  </div>
+</form>
 
   <div class="table-responsive">
     <table class="table table-hover mb-0">
@@ -49,24 +80,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of filteredTasks; let i = index">
+        <tr *ngFor="let task of filteredTasks; let i = index" class="fade-in">
           <td class="text-muted font-weight-bold">{{ i + 1 }}</td>
           <td>
-            <a [routerLink]="['/tasks', task.id]" class="task-link" [style.text-decoration]="task.isDone ? 'line-through' : 'none'" [style.opacity]="task.isDone ? '0.5' : '1'">
+            <a [routerLink]="['/tasks', task.id]" class="task-link" 
+               [style.text-decoration]="task.isDone ? 'line-through' : 'none'" 
+               [style.opacity]="task.isDone ? '0.5' : '1'">
               {{ task.description }}
             </a>
           </td>
           <td>
-            <span class="badge border" [ngClass]="{'bg-danger-light text-danger border-danger': task.priority === 'high', 
-                                                   'bg-warning-light text-warning border-warning': task.priority === 'medium',
-                                                   'bg-info-light text-info border-info': task.priority === 'low'}">
+            <span class="badge border" 
+                  [ngClass]="{'bg-danger-light text-danger border-danger': task.priority === 'high', 
+                              'bg-warning-light text-warning border-warning': task.priority === 'medium',
+                              'bg-info-light text-info border-info': task.priority === 'low'}">
               {{ task.priority | uppercase }}
             </span>
           </td>
           <td class="small text-muted font-weight-500">{{ task.deadline | date: 'MMM d, y' }}</td>
           <td class="text-center">
             <div class="btn-group">
-              <button class="btn btn-sm shadow-sm px-3" [class.btn-primary]="!task.isDone" [class.btn-light]="task.isDone" (click)="toggleComplete(task)">
+              <button class="btn btn-sm shadow-sm px-3" 
+                      [class.btn-primary]="!task.isDone" 
+                      [class.btn-light]="task.isDone" 
+                      (click)="toggleComplete(task)">
                 {{ task.isDone ? 'Undo' : 'Done' }}
               </button>
               <button class="btn btn-sm btn-outline-danger ml-2 border-0" (click)="deleteTask(task.id)">
