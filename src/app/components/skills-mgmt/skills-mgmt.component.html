@@ -13,6 +13,22 @@
   </div>
 
   <div class="card-body p-4">
+    <div class="mb-4 p-3 rounded" style="background-color: #f8fafc; border: 1px dashed #cbd5e1;">
+      <label class="small font-weight-bold text-primary mb-2 d-block">
+        <mat-icon style="font-size: 14px; height: 14px; width: 14px;">visibility</mat-icon> 
+        SKILLS PREVIEW
+      </label>
+      <div class="d-flex flex-wrap">
+        <span *ngFor="let s of formattedSkills$ | async" 
+              class="badge badge-pill badge-info mr-2 mb-2 p-2 shadow-sm fade-in">
+          {{ s }}
+        </span>
+        <div *ngIf="!(formattedSkills$ | async)?.length" class="text-muted small italic">
+          No skills to preview...
+        </div>
+      </div>
+    </div>
+
     <form [formGroup]="skillsForm" (ngSubmit)="submitSkills()">
       
       <div formArrayName="skills">
@@ -25,7 +41,7 @@
                 <mat-icon class="text-sky" style="font-size: 20px;">terminal</mat-icon>
               </span>
             </div>
-            
+        
             <input [formControlName]="i" 
                    class="form-control border-left-0" 
                    placeholder="Leadership">
@@ -53,7 +69,7 @@
         <button type="submit" 
                 class="btn btn-success px-5 py-2" 
                 [disabled]="skillsForm.invalid">
-          Save Skills
+          Save Skill
         </button>
       </div>
     </form>
