@@ -31,10 +31,22 @@
 
     <br>
 
+    <a routerLink="/skills" 
+       routerLinkActive="active-link" 
+       (click)="onLinkClick()"
+       class="list-group-item list-group-item-action py-3">
+      <mat-icon class="mr-2">psychology</mat-icon> <h3>Roadmap</h3>
+    </a>
+
+    <br>
+
     <a href="javascript:void(0)" 
       (click)="onLogout()"
       class="list-group-item list-group-item-action py-3 text-danger">
       <mat-icon class="mr-2">logout</mat-icon> <h3>Logout</h3>
     </a>
+    
+    <br>
+
   </div>
 </div>

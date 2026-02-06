@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { TestComponent } from './pages/test/test.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SkillsMgmtComponent } from './components/skills-mgmt/skills-mgmt.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
     component: TestComponent, 
     canActivate: [AuthGuard],
     children: [
+      { path: 'skills', component: SkillsMgmtComponent },
       { path: 'home', component: HomeComponent },
       { path: 'tasks', component: TaskListComponent },
       { path: 'tasks/:id', component: TaskDetailComponent },

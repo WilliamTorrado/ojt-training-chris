@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { TestComponent } from './pages/test/test.component';
@@ -23,6 +24,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SkillsMgmtComponent } from './components/skills-mgmt/skills-mgmt.component';
 
 @NgModule({
   declarations: [
@@ -39,9 +41,11 @@ import { FormsModule } from '@angular/forms';
     ProfileInfoComponent,
     ProfileStatsComponent,
     LoginComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    SkillsMgmtComponent
   ],
   imports: [
+    ReactiveFormsModule,
     FormsModule,
     MatSidenavModule,
     MatButtonModule,
