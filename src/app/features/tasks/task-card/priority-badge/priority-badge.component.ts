@@ -7,4 +7,4 @@ import { Component, Input } from '@angular/core';
 })
 export class PriorityBadgeComponent {
   @Input() priorityLevel: 'low' | 'medium' | 'high' = 'medium';
-}
+} // low (green), medium (orange), high (red)

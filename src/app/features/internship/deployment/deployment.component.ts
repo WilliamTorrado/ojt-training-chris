@@ -101,7 +101,7 @@ export class DeploymentComponent implements OnInit {
       province: this.provinceControl.value,
       townCity: this.townCityControl.value,
       barangay: this.barangayControl.value,
-      userId: 'Jerald-001',
+      userId: 'jerald bon harris',
       updatedAt: new Date().toISOString()
     };
 
