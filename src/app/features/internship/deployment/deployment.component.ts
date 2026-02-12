@@ -25,20 +25,45 @@ export class DeploymentComponent implements OnInit {
   ngOnInit(): void {
     this.fetchProvinces();
 
-    // Reset logic integrated from ProfileComponent
-    this.provinceControl.valueChanges.subscribe(val => {
-      this.townCityControl.reset('');
-      this.barangayControl.reset('');
-      if (val) this.fetchTowns(val);
-    });
+    const savedData = localStorage.getItem('saved_deployment');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+    
+  
+      this.provinceControl.setValue(parsedData.province, { emitEvent: false });
+    
+      this.locationService.getTownCities(parsedData.province).subscribe(towns => {
+        this.townCities = towns;
 
-    this.townCityControl.valueChanges.subscribe(val => {
+        this.townCityControl.setValue(parsedData.townCity, { emitEvent: false });
+  
+        this.locationService.getBarangays(parsedData.province, parsedData.townCity).subscribe(brgys => {
+          this.barangays = brgys;
+          this.barangayControl.setValue(parsedData.barangay, { emitEvent: false });
+        });
+      });
+    }
+
+  
+    this.provinceControl.valueChanges.subscribe(val => {
+      if (this.provinceControl.dirty) { 
+        this.townCityControl.reset('');
+        this.barangayControl.reset('');
+        this.townCities = [];
+        if (val) this.fetchTowns(val);
+      }
+  });
+
+  this.townCityControl.valueChanges.subscribe(val => {
+    if (this.townCityControl.dirty) {
       this.barangayControl.reset('');
+      this.barangays = [];
       if (val && this.provinceControl.value) {
         this.fetchBarangays(this.provinceControl.value, val);
       }
-    });
-  }
+    }
+  });
+}
 
   fetchProvinces() {
     this.isLoading = true;
@@ -65,19 +90,31 @@ export class DeploymentComponent implements OnInit {
   }
 
   onSave() {
-    if (this.provinceControl.invalid || this.townCityControl.invalid) return;
+    if (this.provinceControl.invalid || this.townCityControl.invalid || this.barangayControl.invalid) {
+      this.errorMessage = "Please complete the form.";
+      return;
+    }
 
     this.isLoading = true;
+
     const payload = {
       province: this.provinceControl.value,
       townCity: this.townCityControl.value,
       barangay: this.barangayControl.value,
-      userId: 'Jerald-001'
+      userId: 'Jerald-001',
+      updatedAt: new Date().toISOString()
     };
 
     this.locationService.saveDeployment(payload).subscribe({
-      next: () => { this.isLoading = false; alert('Deployment Saved!'); },
-      error: (err) => { this.isLoading = false; this.errorMessage = err; }
+      next: () => { 
+        this.isLoading = false;
+
+        alert('Location saved to Local!'); 
+      },
+      error: (err) => { 
+        this.isLoading = false; 
+        this.errorMessage = err; 
+      }
     });
   }
 

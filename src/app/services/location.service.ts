@@ -29,8 +29,18 @@ export class LocationService {
   }
 
   saveDeployment(payload: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/PublicAPI/SaveDeployment`, payload)
-      .pipe(catchError(this.handleError));
+  try {
+    localStorage.setItem('saved_deployment', JSON.stringify(payload));
+    
+      return of({ status: 'success', message: 'Data saved to LocalStorage' });
+   } catch (error) {
+      return throwError('LocalStorage is full or disabled.');
+   }
+  }
+
+  getSavedDeployment(): any {
+    const data = localStorage.getItem('saved_deployment');
+    return data ? JSON.parse(data) : null;
   }
 
   private handleError(error: HttpErrorResponse) {
