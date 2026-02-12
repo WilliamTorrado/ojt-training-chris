@@ -1,0 +1,13 @@
+<mat-card class="task-card" (click)="onTaskClick()" [class.completed]="task.isCompleted">
+  <mat-card-header>
+    <mat-card-title>{{ task.name }}</mat-card-title>
+    <app-priority-badge [priorityLevel]="task.priority"></app-priority-badge>
+    <button mat-icon-button (click)="onMarkComplete($event)">
+      <mat-icon>{{ task.isCompleted ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <p *ngIf="task.details">{{ task.details | slice:0:80 }}{{ task.details.length > 80 ? '...' : '' }}</p>
+    <p class="deadline">{{ task.deadline | date:'mediumDate' }} - {{ task.deadline | timeRemaining }}</p>
+  </mat-card-content>
+</mat-card>

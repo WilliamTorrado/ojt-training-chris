@@ -1,0 +1,50 @@
+.deployment-content {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.deployment-content h1 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: #ffebee;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  color: #c62828;
+}
+
+.deployment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  width: 200px;
+  height: 45px;
+}
+
+.loading-overlay {
+  margin-bottom: 15px;
+}

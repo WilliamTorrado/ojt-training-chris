@@ -1,0 +1,47 @@
+.skills-form-content {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.skills-form-content h1 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.skill-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.skill-name {
+  flex: 2;
+}
+
+.skill-level {
+  flex: 1;
+}
+
+.skill-category {
+  flex: 1;
+}
+
+.form-actions {
+  margin-top: 24px;
+}
+
+.saved-skills {
+  margin-top: 24px;
+}
+
+.saved-skills mat-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

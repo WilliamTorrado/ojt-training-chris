@@ -1,0 +1,26 @@
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 24px;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+.not-found-content h1 {
+  margin-bottom: 8px;
+}
+
+.not-found-content p {
+  margin-bottom: 24px;
+  color: #666;
+}

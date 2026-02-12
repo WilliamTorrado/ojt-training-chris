@@ -1,0 +1,64 @@
+<div class="task-detail-content" *ngIf="task">
+  <div class="page-header">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>{{ task.name }}</h1>
+  </div>
+
+  <mat-card>
+    <mat-card-header>
+      <app-priority-badge [priorityLevel]="task.priority"></app-priority-badge>
+      <button mat-icon-button (click)="markComplete()">
+        <mat-icon>{{ task.isCompleted ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+      </button>
+      <span *ngIf="task.isCompleted" class="completed-label">Completed</span>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="!isEditing">
+      <p *ngIf="task.details">{{ task.details }}</p>
+      <p class="deadline">{{ task.deadline | date:'mediumDate' }} - {{ task.deadline | timeRemaining }}</p>
+    </mat-card-content>
+
+    <mat-card-content *ngIf="isEditing">
+      <form #editForm="ngForm" (ngSubmit)="onSave(editForm)" class="edit-form" *ngIf="task">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Task Name</mat-label>
+          <input matInput name="name" [(ngModel)]="model.name" required minlength="2" #name="ngModel">
+          <mat-error *ngIf="name.invalid && name.touched">
+            <span *ngIf="name.errors?.required">Task name is required.</span>
+            <span *ngIf="name.errors?.minlength">Task name must be at least 2 characters.</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Details</mat-label>
+          <textarea matInput name="details" [(ngModel)]="model.details" rows="4"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Deadline</mat-label>
+          <input matInput type="date" name="deadline" [(ngModel)]="model.deadline">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Priority</mat-label>
+          <mat-select name="priority" [(ngModel)]="model.priority" required>
+            <mat-option *ngFor="let p of priorities" [value]="p.value">{{ p.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="form-actions">
+          <button mat-button type="button" (click)="toggleEdit()">Cancel</button>
+          <button mat-raised-button color="primary" type="submit">Save</button>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions *ngIf="!isEditing">
+      <button mat-button color="primary" (click)="toggleEdit()">Edit</button>
+      <button mat-button color="warn" (click)="deleteTask()">Delete</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div *ngIf="!task" class="not-found">
+  <p>Task not found.</p>
+  <button mat-raised-button color="primary" routerLink="/app/tasks">Back to Tasks</button>
+</div>

@@ -1,0 +1,49 @@
+<div class="tasks-list-content">
+  <div class="page-header">
+    <h1>Tasks</h1>
+    <button mat-raised-button color="primary" (click)="addTask()">
+      <mat-icon>add</mat-icon>
+      Add Task
+    </button>
+  </div>
+
+  <div class="filter-section">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <mat-select [value]="filter" (selectionChange)="onFilterChange($event.value)">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="active">Active</mat-option>
+        <mat-option value="completed">Completed</mat-option>
+        <mat-option value="high">High Priority</mat-option>
+        <mat-option value="medium">Medium Priority</mat-option>
+        <mat-option value="low">Low Priority</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="tasks-grid" *ngIf="filteredTasks.length > 0">
+    <mat-card *ngFor="let task of filteredTasks" class="task-card" [class.completed]="task.isCompleted">
+      <mat-card-header>
+        <mat-card-title>{{ task.name }}</mat-card-title>
+        <app-priority-badge [priorityLevel]="task.priority"></app-priority-badge>
+        <button mat-icon-button (click)="markComplete(task.id)">
+          <mat-icon>{{ task.isCompleted ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <p *ngIf="task.details">{{ task.details }}</p>
+        <p class="deadline">{{ task.deadline | date:'mediumDate' }} - {{ task.deadline | timeRemaining }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="editTask(task)">Edit</button>
+        <button mat-button color="warn" (click)="deleteTask(task)">Delete</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="filteredTasks.length === 0" class="empty-state">
+    <mat-icon>assignment</mat-icon>
+    <p>No tasks found.</p>
+    <button mat-raised-button color="primary" (click)="addTask()" *ngIf="filter === 'all'">Add Task</button>
+  </div>
+</div>

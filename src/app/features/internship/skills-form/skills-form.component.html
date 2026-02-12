@@ -1,0 +1,61 @@
+<div class="skills-form-content">
+  <h1>Intern Skills</h1>
+  <p class="subtitle">Add and manage your skills</p>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Skills Form (Reactive Form with FormBuilder)</mat-card-title>
+      <mat-card-subtitle>FormArray for dynamic form fields, custom validator</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="skillsForm" (ngSubmit)="onSubmit()">
+        <div formArrayName="skills">
+          <div *ngFor="let skill of skills.controls; let i = index" [formGroupName]="i" class="skill-row">
+            <mat-form-field appearance="outline" class="skill-name">
+              <mat-label>Skill Name</mat-label>
+              <input matInput formControlName="name" placeholder="e.g. JavaScript">
+              <mat-error *ngIf="skill.get('name')?.invalid && skill.get('name')?.touched">
+                <span *ngIf="skill.get('name')?.errors?.required">Skill name is required.</span>
+                <span *ngIf="skill.get('name')?.errors?.minlength">Skill name must be at least 2 characters.</span>
+                <span *ngIf="skill.get('name')?.errors?.noNumbers">Skill name should not contain numbers.</span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="skill-level">
+              <mat-label>Level</mat-label>
+              <mat-select formControlName="level">
+                <mat-option *ngFor="let l of skillLevels" [value]="l.value">{{ l.label }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="skill.get('level')?.invalid && skill.get('level')?.touched">Level is required.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="skill-category">
+              <mat-label>Category</mat-label>
+              <input matInput formControlName="category" placeholder="e.g. Programming">
+              <mat-error *ngIf="skill.get('category')?.invalid && skill.get('category')?.touched">Category is required.</mat-error>
+            </mat-form-field>
+            <button mat-icon-button type="button" (click)="removeSkill(i)" [disabled]="skills.length <= 1">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <button mat-stroked-button type="button" (click)="addSkill()">
+          <mat-icon>add</mat-icon>
+          Add Skill
+        </button>
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="skillsForm.invalid">Save Skills</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="savedSkills.length > 0" class="saved-skills">
+    <mat-card-header>
+      <mat-card-title>Saved Skills</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-chip-list>
+        <mat-chip *ngFor="let skill of savedSkills">{{ skill }}</mat-chip>
+      </mat-chip-list>
+    </mat-card-content>
+  </mat-card>
+</div>

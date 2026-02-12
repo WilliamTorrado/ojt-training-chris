@@ -1,0 +1,65 @@
+<div class="home-content">
+  <h1>Welcome to Internship Dashboard</h1>
+
+  <section class="dashboard-section">
+    <h2>Tasks Overview</h2>
+    <app-dashboard-stats [completedCount]="completedCount" [totalCount]="totalCount"></app-dashboard-stats>
+  </section>
+
+  <section class="todo-preview-section">
+    <h2>Recent Tasks</h2>
+    <div *ngIf="previewTasks.length > 0" class="task-cards">
+      <app-task-card
+        *ngFor="let task of previewTasks"
+        [task]="task"
+        (taskClick)="onTaskSelected($event)"
+        (markComplete)="onMarkComplete($event)">
+      </app-task-card>
+    </div>
+    <div *ngIf="previewTasks.length === 0" class="empty-state">
+      <mat-icon>assignment</mat-icon>
+      <p>No tasks yet. Add your first task!</p>
+      <button mat-raised-button color="primary" routerLink="/app/tasks/add">Add Task</button>
+    </div>
+  </section>
+
+  <section class="skills-overview-section">
+    <h2>Skills Overview</h2>
+    <div *ngIf="skills.length > 0; else noSkills">
+      <mat-chip-list>
+        <mat-chip *ngFor="let skill of skills">
+          {{ skill }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <ng-template #noSkills>
+      <div class="empty-state">
+        <mat-icon>star</mat-icon>
+        <p>No skills saved yet. Add your skills on the Skills page.</p>
+        <button mat-raised-button color="primary" routerLink="/app/internship/skills">
+          Go to Skills
+        </button>
+      </div>
+    </ng-template>
+  </section>
+
+  <section class="internship-section">
+    <h2>Internship Quick Links</h2>
+    <div class="quick-links">
+      <mat-card class="link-card" routerLink="/app/internship/deployment">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>location_on</mat-icon>
+          <mat-card-title>Deployment Location</mat-card-title>
+          <mat-card-subtitle>Set your province, town, and barangay</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+      <mat-card class="link-card" routerLink="/app/internship/skills">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>star</mat-icon>
+          <mat-card-title>Skills</mat-card-title>
+          <mat-card-subtitle>Add and manage your skills</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </section>
+</div>

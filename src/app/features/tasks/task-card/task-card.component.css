@@ -1,0 +1,30 @@
+.task-card {
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.task-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.task-card.completed {
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.task-card mat-card-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.task-card mat-card-title {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.task-card .deadline {
+  color: #666;
+  font-size: 12px;
+  margin: 0;
+}

@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="toggleSidenav()" *ngIf="isHandset" aria-label="Toggle menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a routerLink="/app" class="logo-link">
+    <mat-icon>dashboard</mat-icon>
+    <span>{{ appTitle }}</span>
+  </a>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</button>
+  <button mat-button routerLink="/app/tasks" routerLinkActive="active">Tasks</button>
+  <button mat-button routerLink="/app/internship/deployment" routerLinkActive="active">Deployment</button>
+  <button mat-button routerLink="/app/internship/skills" routerLinkActive="active">Skills</button>
+
+  <button
+    mat-button
+    *ngIf="!(isAuthenticated$ | async)"
+    (click)="onLogin()">
+    Login
+  </button>
+  <button
+    mat-button
+    *ngIf="isAuthenticated$ | async"
+    (click)="onLogout()">
+    Logout
+  </button>
+</mat-toolbar>

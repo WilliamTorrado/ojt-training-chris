@@ -1,0 +1,25 @@
+.task-form-content {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.task-form-content h1 {
+  margin-bottom: 24px;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}

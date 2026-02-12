@@ -1,57 +1,39 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-
-
-// different components
-import { HomeComponent } from './components/home/home.component';
-import { TaskListComponent } from './components/task-list/task-list.component';
-import { TaskDetailComponent } from './components/task-detail/task-detail.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { ProfileInfoComponent } from './components/profile-info/profile-info.component';
-import { ProfileStatsComponent } from './components/profile-stats/profile-stats.component';
-import { LoginComponent } from './components/login/login.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TestComponent } from './pages/test/test.component';
+import { Routes, RouterModule } from '@angular/router';
+import { LayoutComponent } from './core/layout/layout.component';
+import { HomeComponent } from './features/home/home.component';
+import { TasksListComponent } from './features/tasks/tasks-list/tasks-list.component';
+import { TaskFormComponent } from './features/tasks/task-form/task-form.component';
+import { TaskDetailComponent } from './features/tasks/task-detail/task-detail.component';
+import { DeploymentComponent } from './features/internship/deployment/deployment.component';
+import { SkillsFormComponent } from './features/internship/skills-form/skills-form.component';
+import { NotFoundComponent } from './core/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
-import { SkillsMgmtComponent } from './components/skills-mgmt/skills-mgmt.component';
+import { GuestGuard } from './guards/guest.guard';
+import { LoginComponent } from './features/auth/login/login.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  
-  
-  { 
-    path: '', 
-    component: TestComponent, 
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
+  {
+    path: 'app',
+    component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'skills', component: SkillsMgmtComponent },
-      { path: 'home', component: HomeComponent },
-      { path: 'tasks', component: TaskListComponent },
+      { path: '', pathMatch: 'full', component: HomeComponent },
+      { path: 'tasks', component: TasksListComponent },
+      { path: 'tasks/add', component: TaskFormComponent },
       { path: 'tasks/:id', component: TaskDetailComponent },
-      
-      { 
-        path: 'profile', 
-        component: ProfileComponent, 
-        children: [
-          { path: 'info', component: ProfileInfoComponent },
-          { path: 'stats', component: ProfileStatsComponent },
-          { path: '', redirectTo: 'info', pathMatch: 'full' } 
-        ]
-      },
-      
-  
-      { path: '', redirectTo: 'home', pathMatch: 'full' }
+      { path: 'internship/deployment', component: DeploymentComponent },
+      { path: 'internship/skills', component: SkillsFormComponent },
+      { path: '**', component: NotFoundComponent }
     ]
   },
-
-  { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '/404' }
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [ CommonModule, RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
