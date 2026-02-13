@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { SkillsService } from '../../services/skills.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { SkillsService } from '../../services/skills.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  username = '';
   previewTasks: Task[] = [];
   completedCount = 0;
   totalCount = 0;
@@ -21,10 +23,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private taskService: TaskService,
     private skillsService: SkillsService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    const profile = this.authService.getCurrentUserProfile();
+    this.username = profile && profile.username || 'Intern';
+
     this.taskService.tasks$.pipe(takeUntil(this.destroy$)).subscribe(tasks => {
       this.previewTasks = tasks.slice(0, 5);
       this.completedCount = tasks.filter(t => t.isCompleted).length;

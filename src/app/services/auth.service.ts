@@ -21,7 +21,7 @@ const USERNAME_KEY = 'auth_username';
 export class AuthService {
   private users: UserProfile[] = [
     {
-      username: 'jerald bon harris',
+      username: 'Oppenheimer',
       password: 'qwerty123',
       fullName: 'Intern One',
       role: 'intern',
@@ -46,7 +46,7 @@ export class AuthService {
       ]
     },
     {
-      username: 'mentor',
+      username: 'Chernobyl',
       password: 'asdf123',
       fullName: 'Mentor User',
       role: 'mentor',
