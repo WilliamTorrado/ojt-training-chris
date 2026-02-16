@@ -59,7 +59,7 @@ export class TaskComponent implements OnInit {
 
   addTask(): void {
     const trimmed = this.newTask.trim();
-    if (!trimmed) {
+    if (!trimmed || this.isDuplicateTaskName(trimmed)) {
       return;
     }
 
@@ -74,6 +74,11 @@ export class TaskComponent implements OnInit {
 
     this.newTask = "";
     this.saveTasks();
+  }
+
+  isAddDisabled(): boolean {
+    const trimmed = this.newTask.trim();
+    return !trimmed || this.isDuplicateTaskName(trimmed);
   }
 
   startEdit(task: Task): void {
@@ -157,5 +162,10 @@ export class TaskComponent implements OnInit {
   private getStorageKey(): string {
     const userId = localStorage.getItem("token");
     return userId ? this.storageBaseKey + ":" + userId : this.storageBaseKey;
+  }
+
+  private isDuplicateTaskName(taskName: string): boolean {
+    const normalized = taskName.trim().toLowerCase();
+    return this.tasks.some((task) => task.name.trim().toLowerCase() === normalized);
   }
 }

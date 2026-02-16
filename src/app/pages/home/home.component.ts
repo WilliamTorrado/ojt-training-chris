@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   renderedHours = 0;          // decimal total
   remainingHours = 486;       // decimal remaining
 
-  selectedDate: string = '';
   timeIn: string = '';
   latestLog: TimeLog | null = null;
 
@@ -94,7 +93,7 @@ export class HomeComponent implements OnInit {
     const hoursDecimal = totalMinutes / 60;
 
     const record: TimeLog = {
-      date: this.selectedDate || new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split('T')[0],
       timeIn: storedTimeIn.toLocaleTimeString(),
       timeOut: timeOut.toLocaleTimeString(),
       hours: hoursDecimal

@@ -1,9 +1,8 @@
 <div class="auth-page">
   <div class="auth-container">
-    <h2>{{ isRegistering ? 'Register' : 'Login' }}</h2>
+    <h2>Login</h2>
 
     <p *ngIf="errorMessage" class="auth-message error">{{ errorMessage }}</p>
-    <p *ngIf="successMessage" class="auth-message success">{{ successMessage }}</p>
 
     <form (ngSubmit)="submit()">
       <div class="form-group">
@@ -30,15 +29,7 @@
         />
       </div>
 
-      <button type="submit" class="btn-submit">
-        {{ isRegistering ? 'Register' : 'Login' }}
-      </button>
+      <button type="submit" class="btn-submit">Login</button>
     </form>
-
-    <p class="toggle-link">
-      <a href="#" (click)="$event.preventDefault(); toggleMode()">
-        {{ isRegistering ? 'Already have an account? Login' : 'New user? Register' }}
-      </a>
-    </p>
   </div>
 </div>

@@ -23,9 +23,9 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'detail/:id', component: DetailComponent, canActivate: [AuthGuard] },
-  { path: 'not-found', component: NotFoundComponent, canActivate: [AuthGuard] },
+  { path: 'not-found', component: NotFoundComponent },
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
-  { path: '**', redirectTo: 'auth' }
+  { path: '**', redirectTo: 'not-found' }
 ];
 
 @NgModule({
@@ -33,3 +33,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+

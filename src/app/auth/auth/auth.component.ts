@@ -10,9 +10,7 @@ import { AuthService } from '../../services/auth.service';
 export class AuthComponent implements OnInit {
   idNumber: string = '';
   password: string = '';
-  isRegistering: boolean = false;
   errorMessage: string = '';
-  successMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -22,15 +20,8 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  toggleMode() {
-    this.isRegistering = !this.isRegistering;
-    this.password = '';
-    this.clearMessages();
-  }
-
   clearMessages() {
     this.errorMessage = '';
-    this.successMessage = '';
   }
 
   submit() {
@@ -42,34 +33,18 @@ export class AuthComponent implements OnInit {
     }
 
     const normalizedId = this.normalizeIdNumber(this.idNumber);
-    if (this.isRegistering) {
-      if (!this.password) {
-        this.errorMessage = 'Enter a password to register.';
-        return;
-      }
 
-      if (this.authService.userExists(normalizedId)) {
-        this.errorMessage = 'ID already registered. Please login instead.';
-        return;
-      }
+    if (!this.password) {
+      this.errorMessage = 'Enter your password.';
+      return;
+    }
 
-      this.authService.register(normalizedId, this.password);
-      this.successMessage = 'Registration successful! You can now login.';
-      this.isRegistering = false;
+    const success = this.authService.login(normalizedId, this.password);
+    if (success) {
       this.idNumber = normalizedId;
-      this.password = '';
+      this.router.navigate(['/home']);
     } else {
-      if (!this.password) {
-        this.errorMessage = 'Enter your password.';
-        return;
-      }
-      const success = this.authService.login(normalizedId, this.password);
-      if (success) {
-        this.idNumber = normalizedId;
-        this.router.navigate(['/home']);
-      } else {
-        this.errorMessage = 'Login failed. Wrong password.';
-      }
+      this.errorMessage = 'Login failed. Wrong ID number or password.';
     }
   }
 

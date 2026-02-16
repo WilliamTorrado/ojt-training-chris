@@ -1,9 +1,17 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { Subject, of } from "rxjs";
 import { catchError, map, takeUntil } from "rxjs/operators";
 import { PublicApiService } from "../services/public-api.service";
 import { SharedDataService, StudentProfile } from "../services/shared-data.service";
+
+interface ProfileFieldConfig {
+  controlName: "fullName" | "cpNumber" | "assignedOffice" | "jobDescription";
+  placeholder: string;
+  requiredMessage: string;
+  whitespaceMessage: string;
+  type: "text" | "textarea";
+}
 
 @Component({
   selector: "app-settings",
@@ -11,16 +19,38 @@ import { SharedDataService, StudentProfile } from "../services/shared-data.servi
   styleUrls: ["./setting.component.css"]
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  user: StudentProfile = {
-    fullName: "",
-    cpNumber: "",
-    assignedOffice: "",
-    jobDescription: "",
-    province: "",
-    townCity: "",
-    barangay: "",
-    profilePicture: ""
-  };
+  profileForm: FormGroup;
+
+  profileFields: ProfileFieldConfig[] = [
+    {
+      controlName: "fullName",
+      placeholder: "Full Name",
+      requiredMessage: "Full Name is required.",
+      whitespaceMessage: "Full Name cannot be spaces only.",
+      type: "text"
+    },
+    {
+      controlName: "cpNumber",
+      placeholder: "CP Number",
+      requiredMessage: "CP Number is required.",
+      whitespaceMessage: "CP Number cannot be spaces only.",
+      type: "text"
+    },
+    {
+      controlName: "assignedOffice",
+      placeholder: "Assigned Office",
+      requiredMessage: "Assigned Office is required.",
+      whitespaceMessage: "Assigned Office cannot be spaces only.",
+      type: "text"
+    },
+    {
+      controlName: "jobDescription",
+      placeholder: "Job Description",
+      requiredMessage: "Job Description is required.",
+      whitespaceMessage: "Job Description cannot be spaces only.",
+      type: "textarea"
+    }
+  ];
 
   provinces: string[] = [];
   townsCities: string[] = [];
@@ -31,18 +61,44 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private publicApiService: PublicApiService, private sharedDataService: SharedDataService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private publicApiService: PublicApiService,
+    private sharedDataService: SharedDataService
+  ) {
+    this.profileForm = this.formBuilder.group({
+      fullName: ["", [Validators.required, this.noWhitespaceValidator]],
+      cpNumber: ["", [Validators.required, this.noWhitespaceValidator]],
+      assignedOffice: ["", [Validators.required, this.noWhitespaceValidator]],
+      jobDescription: ["", [Validators.required, this.noWhitespaceValidator]],
+      province: ["", [Validators.required]],
+      townCity: [{ value: "", disabled: true }, [Validators.required]],
+      barangay: [{ value: "", disabled: true }, [Validators.required]],
+      profilePicture: [""]
+    });
+  }
 
   ngOnInit(): void {
-    this.user = this.sharedDataService.getStudentProfile();
-    this.loadProvinces();
+    const profile = this.sharedDataService.getStudentProfile();
+    this.profileForm.patchValue(profile, { emitEvent: false });
 
-    if (this.user.province) {
-      this.loadTownsCities(this.user.province);
+    this.loadProvinces();
+    this.setupAddressFieldBehavior();
+
+    if (profile.province) {
+      const townCityControl = this.profileForm.get("townCity");
+      if (townCityControl) {
+        townCityControl.enable({ emitEvent: false });
+      }
+      this.loadTownsCities(profile.province);
     }
 
-    if (this.user.province && this.user.townCity) {
-      this.loadBarangays(this.user.province, this.user.townCity);
+    if (profile.province && profile.townCity) {
+      const barangayControl = this.profileForm.get("barangay");
+      if (barangayControl) {
+        barangayControl.enable({ emitEvent: false });
+      }
+      this.loadBarangays(profile.province, profile.townCity);
     }
   }
 
@@ -51,28 +107,37 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onProvinceChange(): void {
-    this.user.townCity = "";
-    this.user.barangay = "";
-    this.townsCities = [];
-    this.barangays = [];
-
-    if (!this.user.province) {
-      return;
-    }
-
-    this.loadTownsCities(this.user.province);
+  get profilePicturePreview(): string {
+    const profilePictureControl = this.profileForm.get("profilePicture");
+    return (profilePictureControl ? profilePictureControl.value : "") || "";
   }
 
-  onTownChange(): void {
-    this.user.barangay = "";
-    this.barangays = [];
+  saveSettings(): void {
+    this.clearMessages();
 
-    if (!this.user.province || !this.user.townCity) {
+    if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      this.errorMessage = "Please complete all required fields.";
       return;
     }
 
-    this.loadBarangays(this.user.province, this.user.townCity);
+    const payload = this.normalizeProfile(this.profileForm.getRawValue() as StudentProfile);
+    this.profileForm.patchValue(payload, { emitEvent: false });
+
+    this.publicApiService
+      .saveSettings(payload)
+      .pipe(
+        catchError(() => {
+          this.persistProfileLocally(payload);
+          this.successMessage = "Profile saved locally (API unavailable).";
+          return of(payload);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.persistProfileLocally(payload);
+        this.successMessage = "Student profile saved.";
+      });
   }
 
   onProfilePictureSelected(event: Event): void {
@@ -90,35 +155,73 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.user.profilePicture = String(reader.result || "");
+      const profilePictureControl = this.profileForm.get("profilePicture");
+      if (profilePictureControl) {
+        profilePictureControl.setValue(String(reader.result || ""));
+      }
     };
     reader.readAsDataURL(file);
   }
 
-  saveSettings(form: NgForm): void {
-    this.clearMessages();
+  showError(controlName: string, errorKey: string): boolean {
+    const control = this.profileForm.get(controlName);
+    return !!control && control.hasError(errorKey) && (control.touched || control.dirty);
+  }
 
-    if (form.invalid) {
-      this.errorMessage = "Please complete all required fields.";
-      return;
+  private setupAddressFieldBehavior(): void {
+    const provinceControl = this.profileForm.get("province");
+    if (provinceControl) {
+      provinceControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((province: string) => {
+        const townCityControl = this.profileForm.get("townCity");
+        const barangayControl = this.profileForm.get("barangay");
+
+        this.townsCities = [];
+        this.barangays = [];
+
+        if (townCityControl) {
+          townCityControl.setValue("");
+          townCityControl.disable({ emitEvent: false });
+        }
+
+        if (barangayControl) {
+          barangayControl.setValue("");
+          barangayControl.disable({ emitEvent: false });
+        }
+
+        if (!province) {
+          return;
+        }
+
+        if (townCityControl) {
+          townCityControl.enable({ emitEvent: false });
+        }
+        this.loadTownsCities(province);
+      });
     }
 
-    const payload = { ...this.user };
+    const townCityControl = this.profileForm.get("townCity");
+    if (townCityControl) {
+      townCityControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((townCity: string) => {
+        const provinceControlRef = this.profileForm.get("province");
+        const province = provinceControlRef ? provinceControlRef.value : "";
+        const barangayControl = this.profileForm.get("barangay");
 
-    this.publicApiService
-      .saveSettings(payload)
-      .pipe(
-        catchError(() => {
-          this.persistProfileLocally(payload);
-          this.successMessage = "Profile saved locally (API unavailable).";
-          return of(payload);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.persistProfileLocally(payload);
-        this.successMessage = "Student profile saved.";
+        this.barangays = [];
+        if (barangayControl) {
+          barangayControl.setValue("");
+          barangayControl.disable({ emitEvent: false });
+        }
+
+        if (!province || !townCity) {
+          return;
+        }
+
+        if (barangayControl) {
+          barangayControl.enable({ emitEvent: false });
+        }
+        this.loadBarangays(province, townCity);
       });
+    }
   }
 
   private loadProvinces(): void {
@@ -171,7 +274,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.publicApiService
       .getBarangays(province, townCity)
       .pipe(
-        map((items) => this.mapToDisplayList(items, ["barangay", "Barangay", "barangayName", "BarangayName", "name", "Name"])),
+        map((items) =>
+          this.mapToDisplayList(items, ["barangay", "Barangay", "barangayName", "BarangayName", "name", "Name"])
+        ),
         catchError(() => {
           this.errorMessage = "Failed to load barangays from API.";
           return of([]);
@@ -225,6 +330,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     return "";
+  }
+
+  private normalizeProfile(profile: StudentProfile): StudentProfile {
+    return {
+      fullName: (profile.fullName || "").trim(),
+      cpNumber: (profile.cpNumber || "").trim(),
+      assignedOffice: (profile.assignedOffice || "").trim(),
+      jobDescription: (profile.jobDescription || "").trim(),
+      province: (profile.province || "").trim(),
+      townCity: (profile.townCity || "").trim(),
+      barangay: (profile.barangay || "").trim(),
+      profilePicture: profile.profilePicture || ""
+    };
+  }
+
+  private noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+    const value = (control.value || "").toString();
+    return value.trim().length > 0 ? null : { whitespace: true };
   }
 
   private persistProfileLocally(profile: StudentProfile): void {

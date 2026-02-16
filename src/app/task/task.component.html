@@ -3,7 +3,7 @@
 
   <div class="task-input">
     <input [(ngModel)]="newTask" placeholder="Enter new task" />
-    <button (click)="addTask()">Add Task</button>
+    <button (click)="addTask()" [disabled]="isAddDisabled()">Add Task</button>
   </div>
 
   <div class="task-controls" *ngIf="tasks.length > 0">

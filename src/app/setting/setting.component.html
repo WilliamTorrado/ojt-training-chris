@@ -2,9 +2,9 @@
   <h2>Student Profile Settings</h2>
   <p class="hint">Loaded provinces from API: <strong>{{ loadedProvincesCount }}</strong></p>
 
-  <form #profileForm="ngForm" class="settings-form" (ngSubmit)="saveSettings(profileForm)">
+  <form [formGroup]="profileForm" class="settings-form" (ngSubmit)="saveSettings()">
     <div class="profile-picture">
-      <img *ngIf="user.profilePicture; else defaultAvatar" [src]="user.profilePicture" alt="Profile Preview" />
+      <img *ngIf="profilePicturePreview; else defaultAvatar" [src]="profilePicturePreview" alt="Profile Preview" />
       <ng-template #defaultAvatar>
         <div class="avatar-placeholder"></div>
       </ng-template>
@@ -12,36 +12,40 @@
       <input id="profile-upload" type="file" accept="image/*" (change)="onProfilePictureSelected($event)" />
     </div>
 
-    <input
-      type="text"
-      placeholder="Full Name"
-      [(ngModel)]="user.fullName"
-      name="fullName"
-      #fullName="ngModel"
-      required
-    />
-    <small class="error" *ngIf="fullName.invalid && fullName.touched">Full Name is required.</small>
+    <ng-container *ngFor="let field of profileFields">
+      <textarea
+        *ngIf="field.type === 'textarea'; else textInput"
+        [placeholder]="field.placeholder"
+        [formControlName]="field.controlName"
+      ></textarea>
 
-    <input type="text" placeholder="CP Number" [(ngModel)]="user.cpNumber" name="cpNumber" />
-    <input type="text" placeholder="Assigned Office" [(ngModel)]="user.assignedOffice" name="assignedOffice" />
-    <textarea placeholder="Job Description" [(ngModel)]="user.jobDescription" name="jobDescription"></textarea>
+      <ng-template #textInput>
+        <input type="text" [placeholder]="field.placeholder" [formControlName]="field.controlName" />
+      </ng-template>
 
-    <select [(ngModel)]="user.province" name="province" (change)="onProvinceChange()" required>
+      <small class="error" *ngIf="showError(field.controlName, 'required')">{{ field.requiredMessage }}</small>
+      <small class="error" *ngIf="showError(field.controlName, 'whitespace')">{{ field.whitespaceMessage }}</small>
+    </ng-container>
+
+    <select formControlName="province">
       <option value="">Select Province</option>
       <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
     </select>
+    <small class="error" *ngIf="showError('province', 'required')">Province is required.</small>
 
-    <select [(ngModel)]="user.townCity" name="townCity" (change)="onTownChange()" [disabled]="!townsCities.length" required>
+    <select formControlName="townCity">
       <option value="">Select Town/City</option>
       <option *ngFor="let town of townsCities" [value]="town">{{ town }}</option>
     </select>
+    <small class="error" *ngIf="showError('townCity', 'required')">Town/City is required.</small>
 
-    <select [(ngModel)]="user.barangay" name="barangay" [disabled]="!barangays.length" required>
+    <select formControlName="barangay">
       <option value="">Select Barangay</option>
       <option *ngFor="let barangay of barangays" [value]="barangay">{{ barangay }}</option>
     </select>
+    <small class="error" *ngIf="showError('barangay', 'required')">Barangay is required.</small>
 
-    <button type="submit">Save Student Profile</button>
+    <button type="submit" [disabled]="profileForm.invalid">Save Student Profile</button>
   </form>
 
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>

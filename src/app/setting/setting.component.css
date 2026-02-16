@@ -43,6 +43,16 @@ h2 {
   background: #155db9;
 }
 
+.settings-form button:disabled {
+  background: #a8b8cc;
+  color: #eef3f8;
+  cursor: not-allowed;
+}
+
+.settings-form button:disabled:hover {
+  background: #a8b8cc;
+}
+
 .profile-picture {
   display: flex;
   flex-direction: column;

@@ -11,16 +11,10 @@ describe('AuthComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', [
-      'isLoggedIn',
-      'login',
-      'register',
-      'userExists'
-    ]);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['isLoggedIn', 'login']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     authServiceSpy.isLoggedIn.and.returnValue(false);
-    authServiceSpy.userExists.and.returnValue(false);
 
     await TestBed.configureTestingModule({
       imports: [FormsModule],
@@ -62,18 +56,6 @@ describe('AuthComponent', () => {
     component.submit();
 
     expect(routerSpy.navigate).not.toHaveBeenCalled();
-    expect(component.errorMessage).toBe('Login failed. Wrong password.');
-  });
-
-  it('should register locally and switch back to login mode', () => {
-    component.isRegistering = true;
-    component.idNumber = '2203181';
-    component.password = 'test123';
-
-    component.submit();
-
-    expect(authServiceSpy.userExists).toHaveBeenCalledWith('2203181');
-    expect(authServiceSpy.register).toHaveBeenCalledWith('2203181', 'test123');
-    expect(component.isRegistering).toBeFalsy();
+    expect(component.errorMessage).toBe('Login failed. Wrong ID number or password.');
   });
 });

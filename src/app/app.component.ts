@@ -17,7 +17,7 @@ export class AppComponent {
   }
 
   isAuthRoute(): boolean {
-    return this.router.url.startsWith("/auth");
+    return this.router.url.startsWith("/auth") || this.router.url.startsWith("/not-found");
   }
 
   handleMenuSelection(menu: string) {
@@ -29,3 +29,4 @@ export class AppComponent {
     this.router.navigate(["/" + menu]);
   }
 }
+

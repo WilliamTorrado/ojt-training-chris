@@ -54,6 +54,15 @@
   background-color: #0056b3;
 }
 
+.task-input button:disabled {
+  background-color: #9eb8d3;
+  cursor: not-allowed;
+}
+
+.task-input button:disabled:hover {
+  background-color: #9eb8d3;
+}
+
 /* ===== CONTROLS ===== */
 .task-controls {
   display: flex;
