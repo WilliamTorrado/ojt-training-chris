@@ -14,13 +14,18 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": ["jasmine", "node"],
+    "skipLibCheck": true,
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
-  }
+  },
+  
+  
+
 }

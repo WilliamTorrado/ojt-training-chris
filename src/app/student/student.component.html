@@ -1,0 +1,150 @@
+<!-- <div class="page-container">
+  <h2 class="page-title">Student Information</h2>
+
+  <div class="student-card">
+    <p class="student-info"><span>Name:</span> John Doe</p>
+    <p class="student-info"><span>Course:</span> BSIT</p>
+    <p class="student-info"><span>Rendered Hours:</span> 120</p>
+    <p class="student-info"><span>Remaining Hours:</span> 366</p>
+  </div>
+</div> -->
+
+<!-- <div class="container mt-4">
+
+  <h3>Student Time Records</h3>
+
+  <!-- FILTER SECTION 
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filter by date (YYYY-MM-DD)"
+        [(ngModel)]="filterDate"
+        (input)="applyFilters()">
+    </div>
+
+    <div class="col-md-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filter by time (e.g. 08:00)"
+        [(ngModel)]="filterTime"
+        (input)="applyFilters()">
+    </div>
+
+    <div class="col-md-4">
+      <button class="btn btn-secondary w-100" (click)="clearFilters()">
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLE 
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Date</th>
+        <th>Time In</th>
+        <th>Time Out</th>
+        <th>Hours Worked</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let log of filteredRecords">
+        <td>{{ log.date }}</td>
+        <td>{{ log.timeIn }}</td>
+        <td>{{ log.timeOut }}</td>
+        <td>{{ log.hours }}</td>
+      </tr>
+
+      <tr *ngIf="filteredRecords.length === 0">
+        <td colspan="4" class="text-center text-muted">
+          No records found
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div> -->
+
+<div class="student-container">
+
+  <!-- PAGE TITLE -->
+  <h2 class="title">Student Time Records</h2>
+
+  <div class="profile-box">
+    <p><strong>Name:</strong> {{ profile.fullName || '-' }}</p>
+    <p><strong>Assigned Office:</strong> {{ profile.assignedOffice || '-' }}</p>
+    <p><strong>Job Description:</strong> {{ profile.jobDescription || '-' }}</p>
+  </div>
+
+  <!-- FILTER SECTION -->
+  <div class="filter-box">
+
+    <div class="filter-group">
+      <label>Filter by Date</label>
+      <input 
+        type="date" 
+        [(ngModel)]="filterDate"
+        (change)="applyFilters()">
+    </div>
+
+    <div class="filter-group">
+      <label>Filter by Time (e.g. 08:00)</label>
+      <input 
+        type="text" 
+        placeholder="Enter time..."
+        [(ngModel)]="filterTime"
+        (input)="applyFilters()">
+    </div>
+
+    <button class="clear-btn" (click)="clearFilters()">
+      Clear Filters
+    </button>
+
+  </div>
+
+  <button (click)="exportToPDF()" class="pdf-btn">
+    Export to PDF
+  </button>
+
+  <!-- TABLE SECTION -->
+  <div class="table-container">
+
+    <table *ngIf="filteredRecords.length > 0; else noData">
+
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Assigned Office</th>
+          <th>Job Description</th>
+          <th>Date</th>
+          <th>Time In</th>
+          <th>Time Out</th>
+          <th>Hours Worked</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let record of filteredRecords">
+          <td>{{ profile.fullName || '-' }}</td>
+          <td>{{ profile.assignedOffice || '-' }}</td>
+          <td>{{ profile.jobDescription || '-' }}</td>
+          <td>{{ record.date }}</td>
+          <td>{{ record.timeIn }}</td>
+          <td>{{ record.timeOut }}</td>
+          <td>{{ formatHours(record.hours) }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+    <ng-template #noData>
+      <p class="no-records">No time records found.</p>
+    </ng-template>
+
+  </div>
+
+</div>

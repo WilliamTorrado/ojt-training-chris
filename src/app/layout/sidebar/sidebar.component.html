@@ -1,0 +1,35 @@
+<div class="sidebar" [ngClass]="{ open: opened }">
+  <ng-container *ngIf="profile$ | async as profile">
+    <div class="avatar-wrap">
+      <img *ngIf="profile.profilePicture; else emptyAvatar" [src]="profile.profilePicture" alt="Student Avatar" class="avatar-image" />
+      <ng-template #emptyAvatar>
+        <div class="avatar-placeholder"></div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <a (click)="onMenuClick('home')" class="sidebar-link">
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </a>
+
+  <a (click)="onMenuClick('students')" class="sidebar-link">
+    <mat-icon>school</mat-icon>
+    <span>Students</span>
+  </a>
+
+  <a (click)="onMenuClick('task')" class="sidebar-link">
+    <mat-icon>work</mat-icon>
+    <span>Task</span>
+  </a>
+
+  <a (click)="onMenuClick('settings')" class="sidebar-link">
+    <mat-icon>settings</mat-icon>
+    <span>Settings</span>
+  </a>
+
+  <a (click)="onLogout()" class="sidebar-link">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </a>
+</div>

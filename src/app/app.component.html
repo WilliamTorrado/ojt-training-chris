@@ -1,1 +1,20 @@
-<app-mypage></app-mypage>
+<ng-container *ngIf="!isAuthRoute(); else authOnly">
+  <div class="app-wrapper">
+    <app-header (menuClick)="toggleMenu()"></app-header>
+
+    <div class="container">
+      <app-sidebar [opened]="sidebarOpened" (menuSelected)="handleMenuSelection($event)">
+      </app-sidebar>
+
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</ng-container>
+
+<ng-template #authOnly>
+  <router-outlet></router-outlet>
+</ng-template>

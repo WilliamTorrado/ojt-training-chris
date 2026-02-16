@@ -1,0 +1,49 @@
+<div class="page-container">
+  <h2>Student Profile Settings</h2>
+  <p class="hint">Loaded provinces from API: <strong>{{ loadedProvincesCount }}</strong></p>
+
+  <form #profileForm="ngForm" class="settings-form" (ngSubmit)="saveSettings(profileForm)">
+    <div class="profile-picture">
+      <img *ngIf="user.profilePicture; else defaultAvatar" [src]="user.profilePicture" alt="Profile Preview" />
+      <ng-template #defaultAvatar>
+        <div class="avatar-placeholder"></div>
+      </ng-template>
+      <label for="profile-upload">Upload Profile Picture</label>
+      <input id="profile-upload" type="file" accept="image/*" (change)="onProfilePictureSelected($event)" />
+    </div>
+
+    <input
+      type="text"
+      placeholder="Full Name"
+      [(ngModel)]="user.fullName"
+      name="fullName"
+      #fullName="ngModel"
+      required
+    />
+    <small class="error" *ngIf="fullName.invalid && fullName.touched">Full Name is required.</small>
+
+    <input type="text" placeholder="CP Number" [(ngModel)]="user.cpNumber" name="cpNumber" />
+    <input type="text" placeholder="Assigned Office" [(ngModel)]="user.assignedOffice" name="assignedOffice" />
+    <textarea placeholder="Job Description" [(ngModel)]="user.jobDescription" name="jobDescription"></textarea>
+
+    <select [(ngModel)]="user.province" name="province" (change)="onProvinceChange()" required>
+      <option value="">Select Province</option>
+      <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
+    </select>
+
+    <select [(ngModel)]="user.townCity" name="townCity" (change)="onTownChange()" [disabled]="!townsCities.length" required>
+      <option value="">Select Town/City</option>
+      <option *ngFor="let town of townsCities" [value]="town">{{ town }}</option>
+    </select>
+
+    <select [(ngModel)]="user.barangay" name="barangay" [disabled]="!barangays.length" required>
+      <option value="">Select Barangay</option>
+      <option *ngFor="let barangay of barangays" [value]="barangay">{{ barangay }}</option>
+    </select>
+
+    <button type="submit">Save Student Profile</button>
+  </form>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+</div>

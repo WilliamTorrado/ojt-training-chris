@@ -1,0 +1,66 @@
+
+<div class="home-container">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <h2>{{ internName$ | async }}</h2>
+    <p>OJT Time Tracking Dashboard</p>
+  </div>
+
+  <!-- HOURS SUMMARY -->
+  <div class="summary-cards">
+
+    <div class="card required">
+      <h3>Required Hours</h3>
+      <p>{{ requiredHours }}</p>
+    </div>
+
+    <div class="card rendered">
+      <h3>Rendered Hours</h3>
+     <p>{{ formatHours(renderedHours) }}</p>
+    </div>
+
+    <div class="card remaining">
+      <h3>Remaining Hours</h3>
+     <p>{{ formatHours(remainingHours) }}</p>
+    </div>
+
+  </div>
+
+  <!-- CLOCK SECTION -->
+  <div class="clock-card">
+
+    <div class="date-section">
+      <label>Select Date</label>
+      <input type="date" [(ngModel)]="selectedDate">
+    </div>
+
+    <div class="button-group">
+      <button class="btn clock-in" (click)="clockIn()">
+        Clock In
+      </button>
+
+      <button class="btn clock-out" (click)="clockOut()">
+        Clock Out
+      </button>
+    </div>
+
+    <div class="current-time" *ngIf="timeIn">
+      ⏰ Currently Clocked In At: <strong>{{ timeIn }}</strong>
+    </div>
+
+  </div>
+
+  <!-- LATEST LOG -->
+  <div class="latest-card" *ngIf="latestLog">
+
+    <h3>Latest Time Record</h3>
+
+    <p><strong>Date:</strong> {{ latestLog.date }}</p>
+    <p><strong>Time In:</strong> {{ latestLog.timeIn }}</p>
+    <p><strong>Time Out:</strong> {{ latestLog.timeOut }}</p>
+    <p><strong>Hours Worked:</strong> {{ formatHours(latestLog.hours) }}</p>
+
+  </div>
+
+</div>

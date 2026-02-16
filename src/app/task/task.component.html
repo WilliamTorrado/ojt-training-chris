@@ -1,0 +1,64 @@
+<div class="page-container">
+  <h2 class="page-title">Tasks</h2>
+
+  <div class="task-input">
+    <input [(ngModel)]="newTask" placeholder="Enter new task" />
+    <button (click)="addTask()">Add Task</button>
+  </div>
+
+  <div class="task-controls" *ngIf="tasks.length > 0">
+    <label>
+      <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" />
+      Select All
+    </label>
+
+    <label>
+      Filter:
+      <select [(ngModel)]="filterBy">
+        <option>All</option>
+        <option>Pending</option>
+        <option>Processing</option>
+        <option>Completed</option>
+      </select>
+    </label>
+
+    <button class="delete-btn" (click)="deleteSelected()">Delete Selected</button>
+    <button class="export-btn" (click)="exportPDF()">Export Selected / All</button>
+  </div>
+
+  <ul class="task-list">
+    <li class="task-item" *ngFor="let task of filteredTasks">
+      <div class="task-header">
+        <input type="checkbox" [(ngModel)]="task.selected" (change)="updateTask()" />
+
+        <ng-container *ngIf="editingTaskId !== task.id; else editMode">
+          <span class="task-name">{{ task.name }}</span>
+        </ng-container>
+
+        <ng-template #editMode>
+          <input [(ngModel)]="editName" class="edit-input" />
+        </ng-template>
+
+        <select [(ngModel)]="task.status" (change)="updateTask()">
+          <option>Pending</option>
+          <option>Processing</option>
+          <option>Completed</option>
+        </select>
+
+        <button class="done-btn" (click)="toggleComplete(task)">Mark Complete</button>
+        <button class="notes-btn" (click)="toggleNotes(task)">Notes</button>
+        <button class="export-btn" (click)="exportPDF(task)">Export PDF</button>
+
+        <button *ngIf="editingTaskId !== task.id" (click)="startEdit(task)">Edit</button>
+        <button *ngIf="editingTaskId === task.id" (click)="saveEdit(task)">Save</button>
+        <button *ngIf="editingTaskId === task.id" (click)="cancelEdit()">Cancel</button>
+
+        <button class="delete-btn" (click)="deleteTask(task.id)">Delete</button>
+      </div>
+
+      <div class="notes-section" *ngIf="task.showNotes">
+        <textarea [(ngModel)]="task.notes" (input)="updateTask()" placeholder="Write notes here..."></textarea>
+      </div>
+    </li>
+  </ul>
+</div>
